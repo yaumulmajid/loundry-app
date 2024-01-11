@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity extends BaseEntity{
+public class User extends BaseEntity{
     private String username;
     private String password;
     private String email;
