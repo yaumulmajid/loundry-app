@@ -10,7 +10,5 @@ import java.util.UUID;
 @EnableJpaRepositories
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     Customer findByCodeId (String codeId);
-
-    @Query(value = "select * from customer where customer_id=?",nativeQuery = true)
     Customer findByCustomerId (UUID customerId);
 }
