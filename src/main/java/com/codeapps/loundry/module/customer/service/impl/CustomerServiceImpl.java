@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 
             APIDataResponseDTO apiDataResponseDTO = new APIDataResponseDTO();
             apiDataResponseDTO.setSuccess(true);
-            apiDataResponseDTO.setMessageCodes(null);
+
             apiDataResponseDTO.setData(insert);
             return apiDataResponseDTO;
 
@@ -60,7 +60,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer update = updateCustomerEntity(customerId,customerDto);
         APIDataResponseDTO apiDataResponseDTO = new APIDataResponseDTO();
         apiDataResponseDTO.setSuccess(true);
-        apiDataResponseDTO.setMessageCodes(null);
         apiDataResponseDTO.setData(update);
         return apiDataResponseDTO;
     }

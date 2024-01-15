@@ -36,7 +36,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<APIDataResponseDTO> updateCustomer(@PathVariable @RequestBody UUID customerId, CustomerDto customerDto) {
+    public ResponseEntity<APIDataResponseDTO> updateCustomer(@PathVariable UUID customerId, @RequestBody CustomerDto customerDto) {
         return ResponseEntity.ok(customerService.updateCustomer(customerId,customerDto));
     }
 }
