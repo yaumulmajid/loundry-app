@@ -1,6 +1,8 @@
 package com.codeapps.loundry.module.user.seeder;
 
+import com.codeapps.loundry.module.user.entity.Role;
 import com.codeapps.loundry.module.user.model.UserRequestDto;
+import com.codeapps.loundry.module.user.repository.RoleRepository;
 import com.codeapps.loundry.module.user.repository.UserRepository;
 import com.codeapps.loundry.module.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +11,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+
+
 @Component
-@Order(value = 3)
+@Order(value = 2)
 @Slf4j
 @RequiredArgsConstructor
 public class UserSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final UserService userService;
     @Override
     public void run(String... args) throws Exception {
@@ -27,17 +32,17 @@ public class UserSeeder implements CommandLineRunner {
     }
     private void seed(){
         if (userRepository.count() == 0) {
-            add("role_su_admin");
+            addUser("role_su_admin");
         }
     }
-    private void add(String roleSuAdmin){
-        UserRequestDto userRequest = new UserRequestDto();
-        userRequest.setUsername("admin");
-        userRequest.setPassword("password");
-        userRequest.setEmail("admin@mail.co");
-        userRequest.setPhone("0877-8889-9998");
-        userRequest.setRole(roleSuAdmin);
-        userRequest.setPassword("12345");
-        userService.addUser(userRequest);
+    private void addUser(String roles){
+        UserRequestDto user = new UserRequestDto();
+        user.setUsername("admin");
+        user.setPassword("password");
+        user.setEmail("admin@mail.co");
+        user.setPhone("0877-8889-9998");
+        user.setRole(roles);
+        user.setPassword("12345");
+        userService.addUser(user);
     }
 }
