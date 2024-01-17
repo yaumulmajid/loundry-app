@@ -1,6 +1,6 @@
 package com.codeapps.loundry.module.customer.service.impl;
 
-import com.codeapps.loundry.entity.Customer;
+import com.codeapps.loundry.module.customer.entity.Customer;
 import com.codeapps.loundry.exceptions.NotFoundException;
 import com.codeapps.loundry.model.APIDataResponseDTO;
 import com.codeapps.loundry.module.customer.model.CustomerDto;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public APIDataResponseDTO updateCustomer(UUID customerId, CustomerDto customerDto) {
+    public APIDataResponseDTO updateCustomer(Long customerId, CustomerDto customerDto) {
         Customer update = updateCustomerEntity(customerId,customerDto);
         APIDataResponseDTO apiDataResponseDTO = new APIDataResponseDTO();
         apiDataResponseDTO.setSuccess(true);
@@ -73,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
-    private Customer updateCustomerEntity(UUID customerId, CustomerDto customerDto) {
+    private Customer updateCustomerEntity(Long customerId, CustomerDto customerDto) {
         Customer customer = customerRepository.findByCustomerId(customerId);
         customer.setCodeId(customerDto.getCodeId());
         customer.setName(customerDto.getName());

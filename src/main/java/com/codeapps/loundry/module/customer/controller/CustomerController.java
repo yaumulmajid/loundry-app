@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/customers")
@@ -36,7 +35,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<APIDataResponseDTO> updateCustomer(@PathVariable UUID customerId, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<APIDataResponseDTO> updateCustomer(@PathVariable Long customerId, @RequestBody CustomerDto customerDto) {
         return ResponseEntity.ok(customerService.updateCustomer(customerId,customerDto));
     }
 }

@@ -9,6 +9,6 @@ public interface CustomerService {
     APIDataResponseDTO getCustomer();
     APIDataResponseDTO getCustomerByCode(String codeId);
     APIDataResponseDTO createCustomer(CustomerDto customerDto);
-    APIDataResponseDTO updateCustomer(UUID customerId, CustomerDto customerDto);
+    APIDataResponseDTO updateCustomer(Long customerId, CustomerDto customerDto);
 
 }

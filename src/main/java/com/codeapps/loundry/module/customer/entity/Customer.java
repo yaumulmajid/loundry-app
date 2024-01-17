@@ -1,4 +1,4 @@
-package com.codeapps.loundry.entity;
+package com.codeapps.loundry.module.customer.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,17 +9,16 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_customers")
+@Table(name = "customer")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer{
+public class Customer {
 
     @Id
-    @Column(name = "customer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID customerId;
+    private Long customerId;
 
     @Column(name = "customer_code")
     private String codeId;
