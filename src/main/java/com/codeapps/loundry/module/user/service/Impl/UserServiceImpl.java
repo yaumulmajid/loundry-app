@@ -1,6 +1,7 @@
 package com.codeapps.loundry.module.user.service.Impl;
 
 import com.codeapps.loundry.exceptions.NotFoundException;
+import com.codeapps.loundry.exceptions.RegisterFailedException;
 import com.codeapps.loundry.module.customer.entity.Customer;
 import com.codeapps.loundry.module.user.entity.Role;
 import com.codeapps.loundry.module.user.entity.User;
@@ -68,10 +69,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private User createUserEntity(UserRequestDto request) {
+        if (userRepository.findUserByUsername(request.getUsername()) != null ) {
+            throw new RegisterFailedException("Username Telah Terdaftar");
+        }
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setPhone(request.getPhone());
 
         Role role = roleRepository.findByName(request.getRole());
         if (role != null) {
@@ -79,7 +84,7 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotFoundException("Role not found: " + request.getRole());
         }
-        user.setCreatedBy(0L);
+        user.setCreatedBy(1L);
         return userRepository.save(user);
     }
     private User udateUserEntity(Long userId, UserRequestDto request) {
@@ -109,6 +114,7 @@ public class UserServiceImpl implements UserService {
             obj.setEmail(user.getEmail());
             obj.setPhone(user.getPhone());
             obj.setPassword(user.getPassword());
+            obj.setRole(user.getRole());
             userDetailDtos.add(obj);
         }
         return userDetailDtos;
@@ -121,6 +127,7 @@ public class UserServiceImpl implements UserService {
         userDetailDto.setEmail(user.getEmail());
         userDetailDto.setPhone(user.getPhone());
         userDetailDto.setPassword(user.getPassword());
+        userDetailDto.setRole(user.getRole());
         return userDetailDto;
     }
 }

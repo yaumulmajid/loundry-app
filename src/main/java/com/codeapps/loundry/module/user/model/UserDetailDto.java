@@ -1,8 +1,11 @@
 package com.codeapps.loundry.module.user.model;
 
 
+import com.codeapps.loundry.module.user.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Set;
 
 
 @Setter
@@ -13,4 +16,5 @@ public class UserDetailDto {
     private String password;
     private String email;
     private String phone;
+    private Set<Role> role;
 }
