@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotFoundException("Role not found: " + request.getRole());
         }
+        user.setModifiedBy(1L);
         userRepository.save(user);
         return user;
     }
