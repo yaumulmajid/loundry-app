@@ -12,6 +12,7 @@ import com.codeapps.loundry.module.user.repository.RoleRepository;
 import com.codeapps.loundry.module.user.repository.UserRepository;
 import com.codeapps.loundry.module.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public APIDataResponseDTO createUser(UserRequestDto request) {
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
 
         Role role = roleRepository.findByName(request.getRole());
@@ -94,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         Role role = roleRepository.findByName(request.getRole());
         if (role != null) {
             user.setRole(Collections.singleton(role));
@@ -114,7 +117,7 @@ public class UserServiceImpl implements UserService {
             obj.setUsername(user.getUsername());
             obj.setEmail(user.getEmail());
             obj.setPhone(user.getPhone());
-            obj.setPassword(user.getPassword());
+            obj.setPassword(passwordEncoder.encode(user.getPassword()));
             obj.setRole(user.getRole());
             userDetailDtos.add(obj);
         }
@@ -127,7 +130,7 @@ public class UserServiceImpl implements UserService {
         userDetailDto.setUsername(user.getUsername());
         userDetailDto.setEmail(user.getEmail());
         userDetailDto.setPhone(user.getPhone());
-        userDetailDto.setPassword(user.getPassword());
+        userDetailDto.setPassword(passwordEncoder.encode(user.getPassword()));
         userDetailDto.setRole(user.getRole());
         return userDetailDto;
     }
