@@ -28,12 +28,12 @@ public class RoleSeeder implements CommandLineRunner {
     }
     private void seed(){
         if (roleRepository.count() == 0) {
-            addRole("role_su_admin", "User Administrator");
+            addRole("role_su_admin", "Super Administrator");
+            addRole("role_admin", "User Administrator");
         }
     }
     private void addRole(String roleName, String roleDescription){
         Role role = new Role();
-        role.setCreatedBy(0L);
         role.setName(roleName);
         role.setDescription(roleDescription);
         roleRepository.save(role);

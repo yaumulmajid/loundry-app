@@ -1,13 +1,11 @@
 package com.codeapps.loundry.module.user.entity;
 
-import com.codeapps.loundry.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "role")
-public class Role extends BaseEntity {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -22,39 +22,17 @@ public class CustomerServiceImpl implements CustomerService {
     private final ObjectMapper mapper;
 
     @Override
-    public APIDataResponseDTO getCustomer() {
-        try {
-            return new APIDataResponseDTO(true, getCustomers());
-        }catch (Exception ex) {
-            return new APIDataResponseDTO(true, ex.getMessage());
-        }
-    }
-
-    @Override
-    public APIDataResponseDTO getCustomerByCode(String codeId) {
-        try {
-            return new APIDataResponseDTO(true, toDTO(getCustomerCode(codeId)));
-        } catch (Exception ex) {
-            return new APIDataResponseDTO(true,ex.getMessage());
-        }
-    }
-
-    @Override
     public APIDataResponseDTO createCustomer(CustomerDto customerDto) {
         try {
             Customer insert = createCustomerEntity(customerDto);
-
             APIDataResponseDTO apiDataResponseDTO = new APIDataResponseDTO();
             apiDataResponseDTO.setSuccess(true);
-
             apiDataResponseDTO.setData(insert);
             return apiDataResponseDTO;
-
         } catch (Exception ex) {
             return new APIDataResponseDTO(true,ex.getMessage());
         }
     }
-
     @Override
     public APIDataResponseDTO updateCustomer(Long customerId, CustomerDto customerDto) {
         Customer update = updateCustomerEntity(customerId,customerDto);
@@ -63,7 +41,22 @@ public class CustomerServiceImpl implements CustomerService {
         apiDataResponseDTO.setData(update);
         return apiDataResponseDTO;
     }
-
+    @Override
+    public APIDataResponseDTO getCustomer() {
+        try {
+            return new APIDataResponseDTO(true, getCustomers());
+        }catch (Exception ex) {
+            return new APIDataResponseDTO(true, ex.getMessage());
+        }
+    }
+    @Override
+    public APIDataResponseDTO getCustomerByCode(String codeId) {
+        try {
+            return new APIDataResponseDTO(true, toDTO(getCustomerCode(codeId)));
+        } catch (Exception ex) {
+            return new APIDataResponseDTO(true,ex.getMessage());
+        }
+    }
     private Customer createCustomerEntity(CustomerDto customerDto) {
         Customer customer = new Customer();
         customer.setCodeId(customerDto.getCodeId());
@@ -75,6 +68,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     private Customer updateCustomerEntity(Long customerId, CustomerDto customerDto) {
         Customer customer = customerRepository.findByCustomerId(customerId);
+        if (customer == null){
+            throw new NotFoundException("Customer Not Found");
+        }
         customer.setCodeId(customerDto.getCodeId());
         customer.setName(customerDto.getName());
         customer.setMobilePhone(customerDto.getMobilePhone());
