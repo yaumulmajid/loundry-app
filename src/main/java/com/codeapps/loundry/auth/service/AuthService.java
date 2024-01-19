@@ -2,11 +2,11 @@ package com.codeapps.loundry.auth.service;
 
 import com.codeapps.loundry.auth.model.AuthRequest;
 import com.codeapps.loundry.auth.model.AuthResponse;
-import com.codeapps.loundry.exceptions.RegisterFailedException;
 import com.codeapps.loundry.module.user.entity.User;
+import com.codeapps.loundry.module.user.model.RoleDetailDto;
+import com.codeapps.loundry.module.user.model.UserDetailDto;
 import com.codeapps.loundry.module.user.repository.UserRepository;
-import com.codeapps.loundry.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
+import com.codeapps.loundry.utill.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -32,16 +34,16 @@ public class AuthService implements UserDetailsService {
     private UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findByUsername(username);
 
-        if (user != null){
+        if (user != null) {
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),
                     user.getPassword(),
                     getAuthorities(user)
             );
         } else {
-            throw new RegisterFailedException("Username is not Valid");
+            throw new UsernameNotFoundException("Username not found: " + username);
         }
     }
 
@@ -54,9 +56,18 @@ public class AuthService implements UserDetailsService {
 
         String newGenerateToken = jwtUtil.generateToken(userDetails);
 
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findByUsername(username);
+        UserDetailDto userDetail = new UserDetailDto();
+        userDetail.setUsername(user.getUsername());
+        userDetail.setEmail(user.getEmail());
+        userDetail.setPhone(user.getPhone());
+        userDetail.setPassword(user.getPassword());
+        List<RoleDetailDto> roleDtos = user.getRole().stream()
+                .map(role -> new RoleDetailDto(role.getName(), role.getDescription()))
+                .collect(Collectors.toList());
+        userDetail.setRole(roleDtos);
 
-        return new AuthResponse(user,newGenerateToken);
+        return new AuthResponse(userDetail,newGenerateToken);
     }
 
     private Set getAuthorities(User user){

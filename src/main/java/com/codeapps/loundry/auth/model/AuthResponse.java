@@ -1,15 +1,16 @@
 package com.codeapps.loundry.auth.model;
 
-import com.codeapps.loundry.module.user.entity.User;
+import com.codeapps.loundry.module.user.model.UserDetailDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponse {
-    private User user;
+    private UserDetailDto user;
     private String token;
-
-    public AuthResponse(User user, String newGenerateToken) {
-    }
 }

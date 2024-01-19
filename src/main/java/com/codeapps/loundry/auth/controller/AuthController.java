@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthResponse> createToken(@ModelAttribute AuthRequest request) throws Exception {
         return ResponseEntity.ok(authService.createToken(request));

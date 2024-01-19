@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,7 @@ public class UserSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void run(String... args) throws Exception {
         try {
@@ -42,7 +44,7 @@ public class UserSeeder implements CommandLineRunner {
     private void addUser(Set<String> roleNames){
         User user = new User();
         user.setUsername("admin");
-        user.setPassword("password");
+        user.setPassword(passwordEncoder.encode("password"));
         user.setEmail("admin@mail.co");
         user.setPhone("0877-8889-9998");
 
@@ -54,8 +56,6 @@ public class UserSeeder implements CommandLineRunner {
             }
         }
         user.setRole(roles);
-        user.setPassword("12345");
-
         userRepository.save(user);
     }
 }

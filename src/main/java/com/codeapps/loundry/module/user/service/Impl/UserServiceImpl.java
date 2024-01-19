@@ -2,10 +2,10 @@ package com.codeapps.loundry.module.user.service.Impl;
 
 import com.codeapps.loundry.exceptions.NotFoundException;
 import com.codeapps.loundry.exceptions.RegisterFailedException;
-import com.codeapps.loundry.module.customer.entity.Customer;
 import com.codeapps.loundry.module.user.entity.Role;
 import com.codeapps.loundry.module.user.entity.User;
 import com.codeapps.loundry.model.APIDataResponseDTO;
+import com.codeapps.loundry.module.user.model.RoleDetailDto;
 import com.codeapps.loundry.module.user.model.UserDetailDto;
 import com.codeapps.loundry.module.user.model.UserRequestDto;
 import com.codeapps.loundry.module.user.repository.RoleRepository;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User createUserEntity(UserRequestDto request) {
-        if (userRepository.findUserByUsername(request.getUsername()) != null ) {
+        if (userRepository.findByUsername(request.getUsername()) != null ) {
             throw new RegisterFailedException("Username Telah Terdaftar");
         }
         User user = new User();
@@ -113,12 +114,14 @@ public class UserServiceImpl implements UserService {
         List<UserDetailDto> userDetailDtos = new ArrayList<>();
         for (User user : userList){
             UserDetailDto obj = new UserDetailDto();
-            obj.setUserId(user.getId());
             obj.setUsername(user.getUsername());
             obj.setEmail(user.getEmail());
             obj.setPhone(user.getPhone());
             obj.setPassword(passwordEncoder.encode(user.getPassword()));
-            obj.setRole(user.getRole());
+            List<RoleDetailDto> roleDtos = user.getRole().stream()
+                    .map(role -> new RoleDetailDto(role.getName(), role.getDescription()))
+                    .collect(Collectors.toList());
+            obj.setRole(roleDtos);
             userDetailDtos.add(obj);
         }
         return userDetailDtos;
@@ -126,12 +129,14 @@ public class UserServiceImpl implements UserService {
     private UserDetailDto getUserId(Long userId){
         User user = userRepository.findById(userId).get();
         UserDetailDto userDetailDto = new UserDetailDto();
-        userDetailDto.setUserId(user.getId());
         userDetailDto.setUsername(user.getUsername());
         userDetailDto.setEmail(user.getEmail());
         userDetailDto.setPhone(user.getPhone());
         userDetailDto.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDetailDto.setRole(user.getRole());
+        List<RoleDetailDto> roleDtos = user.getRole().stream()
+                .map(role -> new RoleDetailDto(role.getName(), role.getDescription()))
+                .collect(Collectors.toList());
+        userDetailDto.setRole(roleDtos);
         return userDetailDto;
     }
 }

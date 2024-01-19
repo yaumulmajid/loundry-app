@@ -1,9 +1,8 @@
 package com.codeapps.loundry.configuration;
 
 import com.codeapps.loundry.auth.service.AuthService;
-import com.codeapps.loundry.util.JwtUtil;
+import com.codeapps.loundry.utill.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +29,7 @@ public class RequestFilterConfiguration extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        final String header = request.getHeader("Auhtorization");
+        final String header = request.getHeader("Authorization");
 
         String jwtToken = null;
         String userName = null;
