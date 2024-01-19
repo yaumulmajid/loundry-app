@@ -1,7 +1,7 @@
 package com.codeapps.loundry.configuration;
 
 import com.codeapps.loundry.auth.service.AuthService;
-import com.codeapps.loundry.utill.JwtUtil;
+import com.codeapps.loundry.utill.AuthUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class RequestFilterConfiguration extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private AuthUtil authUtil;
 
     @Autowired
     private AuthService authService;
@@ -37,7 +37,7 @@ public class RequestFilterConfiguration extends OncePerRequestFilter {
             jwtToken = header.substring(7);
 
             try {
-                userName = jwtUtil.getUsernameFromToken(jwtToken);
+                userName = authUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e ) {
                 System.out.println("Unable to get jwt token");
             } catch (ExpiredJwtException e ) {
@@ -50,7 +50,7 @@ public class RequestFilterConfiguration extends OncePerRequestFilter {
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = authService.loadUserByUsername(userName);
 
-            if (jwtUtil.validateToken(jwtToken, userDetails)){
+            if (authUtil.validateToken(jwtToken, userDetails)){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,
                         userDetails.getAuthorities());

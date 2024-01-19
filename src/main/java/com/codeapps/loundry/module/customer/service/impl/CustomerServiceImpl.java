@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
     private Customer createCustomerEntity(CustomerDto customerDto) {
         Customer customer = new Customer();
-        customer.setCodeId(customerDto.getCodeId());
+        customer.setCodeId(customerDto.getCode());
         customer.setName(customerDto.getName());
         customer.setMobilePhone(customerDto.getMobilePhone());
         customerRepository.save(customer);
@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer == null){
             throw new NotFoundException("Customer Not Found");
         }
-        customer.setCodeId(customerDto.getCodeId());
+        customer.setCodeId(customerDto.getCode());
         customer.setName(customerDto.getName());
         customer.setMobilePhone(customerDto.getMobilePhone());
         customerRepository.save(customer);
@@ -83,7 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
         for (Customer customer : customerList){
             CustomerDto obj = new CustomerDto();
             obj.setCustomerId(customer.getCustomerId());
-            obj.setCodeId(customer.getCodeId());
+            obj.setCode(customer.getCodeId());
             obj.setName(customer.getName());
             obj.setMobilePhone(customer.getMobilePhone());
             customerDtos.add(obj);

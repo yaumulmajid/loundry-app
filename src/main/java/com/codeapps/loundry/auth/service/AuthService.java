@@ -6,7 +6,7 @@ import com.codeapps.loundry.module.user.entity.User;
 import com.codeapps.loundry.module.user.model.RoleDetailDto;
 import com.codeapps.loundry.module.user.model.UserDetailDto;
 import com.codeapps.loundry.module.user.repository.UserRepository;
-import com.codeapps.loundry.utill.JwtUtil;
+import com.codeapps.loundry.utill.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class AuthService implements UserDetailsService {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private AuthUtil authUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -54,7 +54,7 @@ public class AuthService implements UserDetailsService {
 
         final UserDetails userDetails = loadUserByUsername(username);
 
-        String newGenerateToken = jwtUtil.generateToken(userDetails);
+        String newGenerateToken = authUtil.generateToken(userDetails);
 
         User user = userRepository.findByUsername(username);
         UserDetailDto userDetail = new UserDetailDto();
