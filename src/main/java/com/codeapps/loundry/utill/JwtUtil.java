@@ -1,11 +1,13 @@
-package com.codeapps.loundry.util;
+package com.codeapps.loundry.utill;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final static String SECRET_KEY = "SECRET_KEY";
+    private final static Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private final static int TOKEN_VALIDITY = 3600 * 5;
     public String getUsernameFromToken(String token) {
@@ -52,7 +54,7 @@ public class JwtUtil {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+TOKEN_VALIDITY *1000))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 }
